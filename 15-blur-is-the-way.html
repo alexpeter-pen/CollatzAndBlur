@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>15 · Blur Is the Way</title>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root{ --bg:#0b0d10; --card:#12161b; --ink:#e8eef6; --muted:#a7b3c1; --accent:#7dd3fc; --ok:#86efac; --warn:#fca5a5; --line:#1f2937; }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --muted:#475569; --accent:#0284c7; --ok:#16a34a; --warn:#b91c1c; --line:#e2e8f0; }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--ink); background:radial-gradient(1200px 600px at 20% -10%, #0b3a5a22, transparent), var(--bg);
+    }
+    .wrap{max-width:960px;margin:auto;padding:24px}
+    header{padding:18px 0 12px 0; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap}
+    h1{font-size:clamp(1.6rem,2.6vw,2.2rem);margin:0 0 6px 0; letter-spacing:.2px}
+    p.lead{color:var(--muted); margin:.25rem 0 0 0}
+    nav a{color:var(--accent); text-decoration:none; margin-right:.6rem}
+    nav a:hover{text-decoration:underline}
+    .card{
+      background:linear-gradient(180deg, #ffffff08, transparent), var(--card);
+      border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px 18px; box-shadow:0 6px 20px #00000012;
+      margin-bottom:14px;
+    }
+    h2, h3{margin:.3rem 0 .6rem 0; font-size:1.1rem}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace}
+    code.inline{background:#00000022; padding:.1em .35em; border-radius:6px}
+    ul.tight{margin:.2rem 0 .2rem 1.1rem; padding:0}
+    ul.tight li{margin:.15rem 0}
+    pre{background:#00000018; padding:.8rem 1rem; border-radius:12px; overflow:auto; border:1px solid var(--line)}
+    footer{margin-top:18px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem}
+    .pager{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px}
+    .pager a{border:1px solid var(--line); background:#ffffff08; padding:.5rem .7rem; border-radius:12px; color:var(--ink); text-decoration:none}
+    .pager a:hover{background:#ffffff12}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		  
+        <h1>15 · Blur Is the Way</h1>
+        <p class="lead">Constants, lenses, and a finite certificate — all in one page.</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="14-why-blur-necessary.html">← Prev</a>
+      </nav>
+    </header>
+
+    <div class="card">
+      <h3>The uniform-drop goal</h3>
+      <p>For the accelerated odd map \(T(n)=\dfrac{3n+1}{2^{v_2(3n+1)}}\) and the Lyapunov scale
+         \(V(n)=\log n + \varphi(n\bmod 2^k)\), we seek</p>
+      <p class="mono">\(V(T(n)) − V(n) ≤ −δ  \quad (\text{all odd } n;\; δ>0).\)</p>
+      <p class="muted">This converts Collatz into a finite system of inequalities on odd residues mod \(2^k\).</p>
+    </div>
+
+    <div class="card">
+      <h3>Why blur is essential</h3>
+      <ul class="tight">
+        <li><strong>Two lenses:</strong> multiplication prefers the Mellin/log view; addition prefers Fourier/linear. Switching lenses costs a small budget \(\rho\).</li>
+        <li><strong>Local spikes:</strong> \(D_0(r)=\log 3- v_2(3r{+}1)\log 2\) is jagged in \(r\); a short, positive blur \(\overline D=(\mathcal B D_0)\) tames it without cheating.</li>
+        <li><strong>Finite power:</strong> everything is computed modulo \(2^k\), including the unique exceptional class \(r^*\) with \(3r^*+1\equiv 0\pmod{2^k}\).</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>The certificate, boxed</h3>
+      <p>For each odd residue \(r\) with successor \(r'\equiv T(n)\pmod{2^k}\), enforce</p>
+      <pre>φ(r′) − φ(r) ≤ −δ − ȲD(r) + ρ,     where  ȲD = (𝔅 D₀),  D₀(r) = log 3 − v₂(3r+1)·log 2.</pre>
+      <p>Pick a boxcar window (positive, local), bound the tiny additive \(\varepsilon(n)=\log(1+1/(3n))\) by \(\rho\) after the same blur,
+         treat \(r^*\) with the conservative bracket \(\log 3 - k\log 2\), and solve the finite LP for \(\{\varphi(r)\}\) and \(\delta>0\).</p>
+    </div>
+
+    <div class="card">
+      <h3>Constants and meanings</h3>
+      <ul class="tight">
+        <li><strong>\(\delta\)</strong>: the certified per‑step margin of decrease of \(V\).</li>
+        <li><strong>\(\rho\)</strong>: the explicit, principled “switch budget” for the additive term under a multiplicative lens after blur.</li>
+        <li><strong>Gauge:</strong> fix \(\sum_r \varphi(r)=0\) (or similar) to remove additive freedom.</li>
+      </ul>
+      <p class="muted">Typical targets: make \(\delta>0\) with \(\rho+\delta\) below a simple threshold (e.g., \(\log(4/3)\)).</p>
+    </div>
+
+    <div class="card">
+      <h3>Algebraic aside (optional)</h3>
+      <ul class="tight">
+        <li><strong>“0” as action-carrier:</strong> In this lens, \(0\) stands for the class of objects that accept the proposed action (e.g., successor/group action) — what matters is the action, not the label.</li>
+        <li><strong>Finite/Infinite via co‑image:</strong> Observing an infinite set through a finite blur produces a <em>co‑image</em> that captures what is uniformly testable at that scale.</li>
+        <li><strong>Duality:</strong> addition and multiplication are intertwined (Fourier vs Mellin), hence an uncertainty‑style trade‑off makes a small blur natural.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>What to publish/check</h3>
+      <ul class="tight">
+        <li>Parameters \((k, \rho, \delta, \mathcal B)\).</li>
+        <li>The table \(\{\varphi(r)\}\) for odd \(r\bmod 2^k\).</li>
+        <li>A tiny interval‑arithmetic checker log that verifies each residue inequality, with special handling for \(r^*\).</li>
+      </ul>
+      <p class="muted">This is an <em>auditable</em> artifact: short to store, fast to re‑check, independent of any solver internals.</p>
+    </div>
+
+    <div class="pager">
+      <a href="14-why-blur-necessary.html">← Prev</a>
+      <a href="index.html">Home</a>
+    </div>
+
+    <footer>© 2025 • Collatz & Blur.</footer>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		
+  </div>
+</body>
+</html>

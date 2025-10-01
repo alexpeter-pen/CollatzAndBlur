@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Playground · Collatz with Blur</title>
+
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+  <style>
+    :root{
+      --bg:#0b0d10; --card:#12161b; --ink:#e8eef6; --muted:#a7b3c1; --accent:#7dd3fc; --ok:#86efac; --warn:#fca5a5; --line:#1f2937;
+    }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --muted:#475569; --accent:#0284c7; --ok:#16a34a; --warn:#b91c1c; --line:#e2e8f0; }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--ink);
+      background:radial-gradient(1200px 600px at 20% -10%, #0b3a5a22, transparent), var(--bg);
+    }
+    .wrap{max-width:960px;margin:auto;padding:24px}
+    header{
+      padding:18px 0 12px 0; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap
+    }
+    h1{font-size:clamp(1.8rem,3vw,2.4rem);margin:0 0 6px 0; letter-spacing:.2px}
+    p.lead{color:var(--muted); margin:.25rem 0 0 0}
+    nav a{color:var(--accent); text-decoration:none; margin-right:.6rem}
+    nav a:hover{text-decoration:underline}
+
+    .grid{display:grid; gap:16px; grid-template-columns: 1.1fr .9fr}
+    @media (max-width:900px){ .grid{grid-template-columns:1fr} }
+
+    .card{
+      background:linear-gradient(180deg, #ffffff08, transparent), var(--card);
+      border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px 18px; box-shadow:0 6px 20px #00000012;
+      margin-bottom:14px;
+    }
+    h2, h3{margin:.3rem 0 .6rem 0; font-size:1.1rem}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace}
+    .pill{display:inline-block; padding:.28em .6em; border-radius:999px; border:1px solid var(--line); color:var(--muted); font-size:.8rem}
+
+    .row{display:flex; gap:.6rem; align-items:center; flex-wrap:wrap}
+    .stack{display:flex; flex-direction:column; gap:.6rem}
+
+    input[type="number"]{
+      width:200px; padding:.6rem .7rem; border-radius:12px; border:1px solid var(--line); background:#00000010; color:var(--ink)
+    }
+    button{
+      padding:.65rem .9rem; border-radius:12px; border:1px solid var(--line); background:var(--accent); color:#06202e; font-weight:600; cursor:pointer
+    }
+    button:hover{filter:brightness(1.05)}
+    .ghost{background:#ffffff08; color:var(--ink)}
+    .ghost:hover{background:#ffffff12}
+
+    .log{
+      height:240px; overflow:auto; padding:.6rem .8rem; border-radius:12px; background:#05070a; border:1px solid var(--line); font-size:.92rem
+    }
+    .blur-box{
+      background:#05070a; border:1px dashed var(--line); border-radius:12px; padding:.8rem 1rem; font-size:.95rem
+    }
+
+    footer{margin-top:18px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>	  
+        <h1>Collatz Playground (with blur)</h1>
+        <p class="lead">Accelerated odd-only step and a tiny local average that reveals drift.</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="Playground1.html">No blur</a>
+      </nav>
+    </header>
+
+    <section class="grid">
+      <!-- Left: explanation -->
+      <div class="card">
+        <h2>Setup</h2>
+        <p>
+          We use the accelerated step
+          \( T(N)=\dfrac{3N+1}{2^{v_2(3N+1)}} \)
+          and monitor the log-change
+          \( \Delta(N)=\log\!\big(\tfrac{T(N)}{N}\big) \).
+        </p>
+        <p class="muted">
+          Raw steps can jump, but a short average over neighboring last bits (“blur”) smooths out the
+          \(v_2(3N+1)\) spikes and reveals a small downward drift.
+        </p>
+        <div class="blur-box">
+          <strong>4-bit blur:</strong> average \(\Delta\) over the 8 odd residues in the same block of size \(2^4\).
+          If the average is negative, the step trends down on a log scale.
+        </div>
+      </div>
+
+      <!-- Right: interactive -->
+      <div class="card">
+        <div class="row" style="justify-content:space-between; align-items:baseline">
+          <h2>Try it</h2>
+          <span class="pill">Odd-only + 4-bit blur</span>
+        </div>
+        <div class="stack">
+          <div class="row">
+            <label for="n0" class="muted">Start number:</label>
+            <input id="n0" type="number" min="1" step="1" value="27" />
+            <button id="runBtn">Run</button>
+            <button id="clearBtn" class="ghost">Clear</button>
+          </div>
+          <div class="log mono" id="log" aria-live="polite"></div>
+          <div class="card" id="blurCard" style="margin-top:12px">
+            <h3>Blur summary</h3>
+            <div id="blur"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>
+    <footer>© 2025 • Collatz & Blur.</footer>
+  </div>
+
+  <script>
+    const logEl = document.getElementById('log');
+    const blurEl = document.getElementById('blur');
+
+    const print = (s) => {
+      const line = document.createElement('div');
+      line.textContent = s;
+      logEl.appendChild(line);
+      logEl.scrollTop = logEl.scrollHeight;
+    };
+
+    const v2 = (m) => {
+      let count = 0n;
+      while (m % 2n === 0n) { m /= 2n; count++; }
+      return count;
+    };
+    const oddPart = (m) => {
+      while (m % 2n === 0n) m /= 2n;
+      return m;
+    };
+    const T = (N) => {
+      const threeNplus1 = 3n * N + 1n;
+      const t = v2(threeNplus1);
+      const next = threeNplus1 >> t;
+      return { next, t };
+    };
+    const Delta = (N) => {
+      const n = BigInt(N);
+      const threeNplus1 = 3n * n + 1n;
+      const t = v2(threeNplus1);
+      const Tn = threeNplus1 >> t;
+      const delta = Math.log(Number(Tn) / Number(n)); // demo-scale only
+      return { delta, t, Tn };
+    };
+
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      logEl.innerHTML = ''; blurEl.innerHTML = '';
+    });
+
+    document.getElementById('runBtn').addEventListener('click', runCollatz);
+
+    function runCollatz() {
+      const n0 = BigInt(document.getElementById('n0').value || '1');
+      logEl.innerHTML = ''; blurEl.innerHTML = '';
+
+      const start = oddPart(n0);
+      print(`Starting from odd N = ${start}`);
+
+      const { delta, t, Tn } = Delta(start);
+      print(`${start} → T(N) = ${Tn},  v₂ = ${t},  Δ = ${delta.toFixed(6)}`);
+
+      // 4-bit blur over odd neighbors in the same 16-block
+      const base = start & ~15n; // mask last 4 bits
+      const neighbors = [];
+      for (let i = 0n; i < 16n; i += 2n) {
+        const x = base + i + 1n; // odd only
+        if (x <= 0n) continue;
+        const { delta: d } = Delta(x);
+        neighbors.push({ x, d });
+      }
+
+      const avg = neighbors.reduce((sum, o) => sum + o.d, 0) / neighbors.length;
+
+      let html = `<strong>4-bit blur average Δ over neighbors of ${start}:</strong><br>`;
+      neighbors.forEach(o => { html += `Δ(${o.x}) = ${o.d.toFixed(6)}<br>`; });
+      html += `<br><strong>Average Δ ≈ ${avg.toFixed(6)}</strong><br>`;
+      html += `<span class="muted">If average Δ &lt; 0, blur sees a downward drift.</span>`;
+      blurEl.innerHTML = html;
+    }
+  </script>
+</body>
+</html>

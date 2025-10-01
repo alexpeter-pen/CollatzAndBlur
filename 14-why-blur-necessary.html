@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>14 · Why Blur Is Common</title>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root{
+      --bg:#0b0d10; --card:#12161b; --ink:#e8eef6; --muted:#a7b3c1; --accent:#7dd3fc; --ok:#86efac; --warn:#fca5a5; --line:#1f2937;
+    }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --muted:#475569; --accent:#0284c7; --ok:#16a34a; --warn:#b91c1c; --line:#e2e8f0; }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--ink); background:radial-gradient(1200px 600px at 20% -10%, #0b3a5a22, transparent), var(--bg);
+    }
+    .wrap{max-width:960px;margin:auto;padding:24px}
+    header{padding:18px 0 12px 0; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap}
+    h1{font-size:clamp(1.6rem,2.6vw,2.2rem);margin:0 0 6px 0; letter-spacing:.2px}
+    p.lead{color:var(--muted); margin:.25rem 0 0 0}
+    nav a{color:var(--accent); text-decoration:none; margin-right:.6rem}
+    nav a:hover{text-decoration:underline}
+    .card{
+      background:linear-gradient(180deg, #ffffff08, transparent), var(--card);
+      border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px 18px; box-shadow:0 6px 20px #00000012;
+      margin-bottom:14px;
+    }
+    h2, h3{margin:.3rem 0 .6rem 0; font-size:1.1rem}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace}
+    .pill{display:inline-block; padding:.28em .6em; border-radius:999px; border:1px solid var(--line); color:var(--muted); font-size:.8rem}
+    footer{margin-top:18px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem}
+    .toc{display:grid; gap:.6rem}
+    .toc a{color:var(--accent); text-decoration:none}
+    .toc a:hover{text-decoration:underline}
+    .pager{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px}
+    .pager a{border:1px solid var(--line); background:#ffffff08; padding:.5rem .7rem; border-radius:12px; color:var(--ink); text-decoration:none}
+    .pager a:hover{background:#ffffff12}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		  
+        <h1>14 · Why Blur Is Common</h1>
+        <p class="lead">Regularization happens everywhere — and it’s principled.</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="13-right-question-limits.html">← Prev</a>
+        <a href="15-blur-is-the-way.html">Next →</a>
+      </nav>
+    </header>
+    <div class="card">
+      <h3>What “blur” means here</h3>
+      <p>By blur we mean a short, <em>positive</em> local averaging on last bits. It accepts that extremely fine residue spikes are not robust, while preserving the correct trend.
+         (Pages 9–12 used a positive window \(\mathcal B\) and a small uniform budget \(\rho\) for the tiny additive \(\varepsilon(n)=\log(1+1/(3n))\).)</p>
+    </div>
+
+    <div class="card">
+      <h3>Everyday mathematical regularizations</h3>
+      <ul class="tight">
+        <li><strong>Fejér means (Fourier):</strong> \(\sigma_N f = F_N * f\), with \(F_N\ge 0\). Positivity removes Gibbs oscillations while preserving limits for continuous \(f\).</li>
+        <li><strong>Poisson/Abel smoothing:</strong> \(P_r * f\) (harmonic extension) or \(\sum a_n r^n\) for power series; small \(1-r\) is a controlled blur that stabilizes sums.</li>
+        <li><strong>Gaussian/heat kernel:</strong> \(G_t * f\) with variance \(2t\) solves \(\partial_t u=\Delta u\); infinitesimal blur that preserves mass and reveals structure.</li>
+        <li><strong>Tikhonov/TV penalties:</strong> small regularizers make ill‑posed inversions stable without overfitting noise.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Dual lenses & uncertainty</h3>
+      <p>Addition and multiplication are dual under a change of variables: the Mellin transform is a Fourier transform in \(\log x\)</p>
+      <p class="mono">\(\mathcal M\{f\}(s)=\int_0^\infty x^{s-1} f(x)\,dx,\quad x=e^t\Rightarrow \mathcal M\{f\}(\tfrac{1}{2}+i\xi)=\int_{\mathbb R} e^{-i\xi t} e^{t/2} f(e^t)\,dt.\)</p>
+      <p>Demanding perfect sharpness in both lenses violates standard uncertainty trade‑offs; a tiny blur is the natural price for switching between + and × views.</p>
+    </div>
+
+    <div class="card">
+      <h3>Physics analogy (handled carefully)</h3>
+      <p>In many‑body systems, changing conditions can make <em>collective</em> behavior dominate over individual labels.
+         For example, in Bose–Einstein condensation many bosons occupy one quantum state, yielding macroscopic coherence; classical, per‑particle descriptions become less informative.
+         Similarly, decoherence <em>blurs</em> phase information, making coarse‑grained classical behavior emerge. The message: some fine distinctions are not the right observables.</p>
+    </div>
+
+    <div class="card">
+      <h3>Takeaways for Collatz</h3>
+      <ul class="tight">
+        <li>The blur is not ad‑hoc; it’s the standard way to stabilize spiky discrete signals.</li>
+        <li>Positivity and locality keep the certificate conservative and finite.</li>
+        <li>We only need a provable bound \(\rho\), not an exact hidden formula.</li>
+      </ul>
+      <p class="muted">Next: “Blur is the way” — we summarize the constants, transforms, and certificate in one page.</p>
+    </div>
+
+    <div class="pager"><a href="13-right-question-limits.html">← Prev</a> <a href="15-blur-is-the-way.html">Next →</a></div>
+    <footer>© 2025 • Collatz & Blur.</footer>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		
+  </div>
+</body>
+</html>

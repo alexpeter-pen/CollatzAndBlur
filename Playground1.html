@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Playground · Collatz (no blur)</title>
+
+  <!-- MathJax to match index.html capability -->
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+  <style>
+    :root{
+      --bg:#0b0d10; --card:#12161b; --ink:#e8eef6; --muted:#a7b3c1; --accent:#7dd3fc; --ok:#86efac; --warn:#fca5a5; --line:#1f2937;
+    }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --muted:#475569; --accent:#0284c7; --ok:#16a34a; --warn:#b91c1c; --line:#e2e8f0; }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--ink);
+      background:radial-gradient(1200px 600px at 20% -10%, #0b3a5a22, transparent), var(--bg);
+    }
+    .wrap{max-width:960px;margin:auto;padding:24px}
+    header{
+      padding:18px 0 12px 0; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap
+    }
+    h1{font-size:clamp(1.8rem,3vw,2.4rem);margin:0 0 6px 0; letter-spacing:.2px}
+    p.lead{color:var(--muted); margin:.25rem 0 0 0}
+    nav a{color:var(--accent); text-decoration:none; margin-right:.6rem}
+    nav a:hover{text-decoration:underline}
+
+    .grid{display:grid; gap:16px; grid-template-columns: 1.1fr .9fr}
+    @media (max-width:900px){ .grid{grid-template-columns:1fr} }
+
+    .card{
+      background:linear-gradient(180deg, #ffffff08, transparent), var(--card);
+      border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px 18px; box-shadow:0 6px 20px #00000012;
+      margin-bottom:14px;
+    }
+    h2, h3{margin:.3rem 0 .6rem 0; font-size:1.1rem}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace}
+    .pill{display:inline-block; padding:.28em .6em; border-radius:999px; border:1px solid var(--line); color:var(--muted); font-size:.8rem}
+
+    .row{display:flex; gap:.6rem; align-items:center; flex-wrap:wrap}
+    .stack{display:flex; flex-direction:column; gap:.6rem}
+
+    input[type="number"]{
+      width:200px; padding:.6rem .7rem; border-radius:12px; border:1px solid var(--line); background:#00000010; color:var(--ink)
+    }
+    button{
+      padding:.65rem .9rem; border-radius:12px; border:1px solid var(--line); background:var(--accent); color:#06202e; font-weight:600; cursor:pointer
+    }
+    button:hover{filter:brightness(1.05)}
+    .ghost{background:#ffffff08; color:var(--ink)}
+    .ghost:hover{background:#ffffff12}
+
+    .log{
+      height:240px; overflow:auto; padding:.6rem .8rem; border-radius:12px; background:#05070a; border:1px solid var(--line); font-size:.92rem
+    }
+    .ok{color:var(--ok)}
+    .warn{color:var(--warn)}
+
+    footer{margin-top:18px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		  
+        <h1>Collatz Playground (no blur)</h1>
+        <p class="lead">Accelerated odd-only walk: \(T(N) = \frac{3N+1}{2^{v_2(3N+1)}}\)</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="Playground2.html">With blur →</a>
+      </nav>
+    </header>
+
+    <section class="grid">
+      <!-- Left: explainer -->
+      <div class="card">
+        <h2>What is this?</h2>
+        <p>
+          Start with any positive integer <span class="mono">n</span>. If it’s even, repeatedly divide by 2 until it’s odd.
+          For an odd <span class="mono">N</span>, define the accelerated step
+          <span class="mono">T(N) = (3N + 1) / 2<sup>v₂(3N+1)</sup></span>.
+        </p>
+        <h3>Why accelerated?</h3>
+        <p class="muted">It collapses the “divide by 2 until odd” part into the same move, so every line is odd → odd.</p>
+
+        <details class="card" style="margin-top:10px; padding:12px">
+          <summary><strong>Notation</strong></summary>
+          <div class="stack" style="margin-top:.6rem">
+            <p><span class="mono">v₂(m)</span> is the exponent of 2 dividing <span class="mono">m</span>.</p>
+            <p>The walk logs each step with the value of <span class="mono">v₂(3N+1)</span>.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- Right: runner -->
+      <div class="card">
+        <div class="row" style="justify-content:space-between; align-items:baseline">
+          <h2>Try it</h2>
+          <span class="pill">Odd-only walk</span>
+        </div>
+        <div class="stack">
+          <div class="row">
+            <label for="startN" class="muted">Start number:</label>
+            <input id="startN" type="number" min="1" step="1" value="27" />
+            <button id="runBtn">Run</button>
+            <button id="clearBtn" class="ghost">Clear</button>
+          </div>
+          <div class="log mono" id="log" aria-live="polite"></div>
+          <p class="muted" style="margin:.2rem 0 0 0">
+            If you enter an even number, we drop its factors of 2 first (jump to the next odd).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer>© 2025 • Collatz & Blur.</footer>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		
+  </div>
+
+  <script>
+    // Utilities
+    const v2 = (m) => {
+      let t = 0n;
+      while (m % 2n === 0n) { m /= 2n; t++; }
+      return Number(t);
+    };
+    const oddPart = (m) => {
+      while (m % 2n === 0n) m /= 2n;
+      return m;
+    };
+    const accelStep = (N) => {
+      // N must be odd here
+      const threeNplus1 = 3n*N + 1n;
+      const t = v2(threeNplus1);
+      const next = threeNplus1 >> BigInt(t); // divide by 2^t
+      return { next, t };
+    };
+
+    // DOM
+    const logEl = document.getElementById('log');
+    const startEl = document.getElementById('startN');
+    const runBtn = document.getElementById('runBtn');
+    const clearBtn = document.getElementById('clearBtn');
+
+    const print = (s, cls='') => {
+      const line = document.createElement('div');
+      if (cls) line.className = cls;
+      line.textContent = s;
+      logEl.appendChild(line);
+      logEl.scrollTop = logEl.scrollHeight;
+    };
+
+    clearBtn.addEventListener('click', () => { logEl.innerHTML = ''; });
+
+    runBtn.addEventListener('click', () => {
+      logEl.innerHTML = '';
+      let n = BigInt(startEl.value || 1);
+      if (n < 1n) { print('Please enter a positive integer.', 'warn'); return; }
+
+      // Jump to the odd subsequence start
+      const startOdd = oddPart(n);
+      if (startOdd !== n) {
+        print(`Start is even. Dropping factors of 2 → ${startOdd}`, 'muted');
+      }
+      let N = startOdd;
+
+      const seen = new Set();
+      let steps = 0, maxSteps = 10000;
+      print(`Odd start: ${N}`);
+      while (steps < maxSteps) {
+        if (seen.has(N.toString())) { print(`Cycle detected at ${N} — stopping.`, 'warn'); break; }
+        seen.add(N.toString());
+
+        const {next, t} = accelStep(N);
+        print(`${N} → T(N) = (3·${N} + 1) / 2^${t} = ${next}`);
+        steps++;
+
+        if (next === 1n) { print(`Reached 1 in ${steps} accelerated steps.`, 'ok'); break; }
+        N = next;
+      }
+      if (steps >= maxSteps) print('Stopped after many steps. You can try a smaller start.', 'warn');
+    });
+  </script>
+</body>
+</html>

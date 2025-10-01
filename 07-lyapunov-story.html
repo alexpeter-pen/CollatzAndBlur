@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>7 · Lyapunov’s Idea</title>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root{ --bg:#0b0d10; --card:#12161b; --ink:#e8eef6; --muted:#a7b3c1; --accent:#7dd3fc; --ok:#86efac; --warn:#fca5a5; --line:#1f2937; }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --muted:#475569; --accent:#0284c7; --ok:#16a34a; --warn:#b91c1c; --line:#e2e8f0; }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--ink); background:radial-gradient(1200px 600px at 20% -10%, #0b3a5a22, transparent), var(--bg);
+    }
+    .wrap{max-width:960px;margin:auto;padding:24px}
+    header{padding:18px 0 12px 0; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap}
+    h1{font-size:clamp(1.6rem,2.6vw,2.2rem);margin:0 0 6px 0; letter-spacing:.2px}
+    p.lead{color:var(--muted); margin:.25rem 0 0 0}
+    nav a{color:var(--accent); text-decoration:none; margin-right:.6rem}
+    nav a:hover{text-decoration:underline}
+    .card{
+      background:linear-gradient(180deg, #ffffff08, transparent), var(--card);
+      border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px 18px; box-shadow:0 6px 20px #00000012;
+      margin-bottom:14px;
+    }
+    h2, h3{margin:.3rem 0 .6rem 0; font-size:1.1rem}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace}
+    code.inline{background:#00000022; padding:.1em .35em; border-radius:6px}
+    ul.tight{margin:.2rem 0 .2rem 1.1rem; padding:0}
+    ul.tight li{margin:.15rem 0}
+    footer{margin-top:18px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem}
+    .pager{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px}
+    .pager a{border:1px solid var(--line); background:#ffffff08; padding:.5rem .7rem; border-radius:12px; color:var(--ink); text-decoration:none}
+    .pager a:hover{background:#ffffff12}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		  
+        <h1>7 · Lyapunov’s Idea</h1>
+        <p class="lead">A short story about monotone energy.</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="06-how-ingredient-helps.html">← Prev</a>
+        <a href="08-lyapunov-here-catch.html">Next →</a>
+      </nav>
+    </header>
+    <div class="card">
+      <h3>What is a Lyapunov function?</h3>
+      <p>For a discrete map \(x\mapsto F(x)\), a Lyapunov function \(V\) is a scale that <em>drops</em> each step:
+      \[ V(F(x)) - V(x) \le -\delta \quad (\delta>0). \]
+      The drop needn’t be huge—any uniform \(\delta>0\) controls long‑term behavior.</p>
+      <p class="muted">We work with the accelerated odd Collatz map, so “one step” means applying \(T\) at an odd number.</p>
+    </div>
+
+    <div class="card">
+      <h3>Our choice of \(V\)</h3>
+      <p>We use
+      \[ V(n) = \log n \, + \, \varphi\bigl(n \bmod 2^k\bigr), \quad n\text{ odd}, \]
+      where \(\varphi\) is a small correction defined on the <em>odd</em> residues modulo \(2^k\).</p>
+      <ul class="tight">
+        <li><strong>\(\log n\)</strong> captures multiplicative scale—perfect for the halving and the factor 3.</li>
+        <li><strong>\(\varphi\)</strong> compensates residue bumps from \(v_2(3n{+}1)\).</li>
+        <li><strong>\(k\)</strong> tunes resolution: larger \(k\) = finer residue control (still finite).</li>
+      </ul>
+      <p class="muted">We normalize \(\varphi\) (e.g., average zero) to fix the additive gauge freedom.</p>
+    </div>
+
+    <div class="card">
+      <h3>The inequality we enforce</h3>
+      <p>With \(T(n)=\dfrac{3n+1}{2^{v_2(3n+1)}}\) and \(r\equiv n\bmod 2^k\), \(r'\equiv T(n)\bmod 2^k\), the change splits as</p>
+      <p class="mono">\(V(T(n)) − V(n) = [\log 3 − v_2(3n+1)\cdot \log 2] + \log(1+1/(3n)) + [φ(r′) − φ(r)].\)</p>
+      <p>After a tiny last‑bits blur we bound the small additive term by \(\rho\). The <em>finite residue certificate</em> then requires, for every odd residue \(r\),</p>
+      <pre>φ(r′) − φ(r) ≤ −δ − [log 3 − v₂(3r+1)·log 2] + ρ.</pre>
+      <p>If such \(\varphi,\delta\) exist with \(\delta>0\) (and a small explicit \(\rho\)), we have a uniform drop on every odd step.</p>
+    </div>
+
+    <div class="card">
+      <h3>How this controls trajectories</h3>
+      <ul class="tight">
+        <li>Each odd step reduces \(V\) by at least \(\delta\). Summing along an orbit forces \(\log n\) to decrease overall.</li>
+        <li>Once below a small threshold, the rest can be checked finitely (computer‑verifiable).</li>
+        <li>Even steps are already harmless (they halve \(n\)); our analysis is anchored on accelerated odd steps.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>What to remember</h3>
+      <ul class="tight">
+        <li>\(V=\log n + \varphi(n\bmod 2^k)\) is the scale.</li>
+        <li>\(\delta\) is the certified margin; \(\rho\) is the small budget for switching lenses (+/×).</li>
+        <li>The certificate is <em>finite</em>: it’s just a system of linear inequalities on odd residues.</li>
+      </ul>
+      <p class="muted">Next: applying Lyapunov here—and the small “catch” we must handle carefully.</p>
+    </div>
+
+    <div class="pager">
+      <a href="06-how-ingredient-helps.html">← Prev</a>
+      <a href="08-lyapunov-here-catch.html">Next →</a>
+    </div>
+    <footer>© 2025 • Collatz & Blur.</footer>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		
+  </div>
+</body>
+</html>

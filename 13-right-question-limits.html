@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>13 · Asking the Right Question</title>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root{ --bg:#0b0d10; --card:#12161b; --ink:#e8eef6; --muted:#a7b3c1; --accent:#7dd3fc; --ok:#86efac; --warn:#fca5a5; --line:#1f2937; }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --muted:#475569; --accent:#0284c7; --ok:#16a34a; --warn:#b91c1c; --line:#e2e8f0; }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--ink); background:radial-gradient(1200px 600px at 20% -10%, #0b3a5a22, transparent), var(--bg);
+    }
+    .wrap{max-width:960px;margin:auto;padding:24px}
+    header{padding:18px 0 12px 0; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap}
+    h1{font-size:clamp(1.6rem,2.6vw,2.2rem);margin:0 0 6px 0; letter-spacing:.2px}
+    p.lead{color:var(--muted); margin:.25rem 0 0 0}
+    nav a{color:var(--accent); text-decoration:none; margin-right:.6rem}
+    nav a:hover{text-decoration:underline}
+    .card{
+      background:linear-gradient(180deg, #ffffff08, transparent), var(--card);
+      border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px 18px; box-shadow:0 6px 20px #00000012;
+      margin-bottom:14px;
+    }
+    h2, h3{margin:.3rem 0 .6rem 0; font-size:1.1rem}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace}
+    .pill{display:inline-block; padding:.28em .6em; border-radius:999px; border:1px solid var(--line); color:var(--muted); font-size:.8rem}
+    footer{margin-top:18px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem}
+    .pager{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px}
+    .pager a{border:1px solid var(--line); background:#ffffff08; padding:.5rem .7rem; border-radius:12px; color:var(--ink); text-decoration:none}
+    .pager a:hover{background:#ffffff12}
+    ul.tight{margin:.2rem 0 .2rem 1.1rem; padding:0}
+    ul.tight li{margin:.15rem 0}
+    code.inline{background:#00000022; padding:.1em .35em; border-radius:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		  
+        <h1>13 · Asking the Right Question</h1>
+        <p class="lead">Precision vs. principled uncertainty.</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="12-constants-car-box.html">← Prev</a>
+        <a href="14-why-blur-necessary.html">Next →</a>
+      </nav>
+    </header>
+    <div class="card">
+      <h3>What are we really trying to prove?</h3>
+      <p>Not that every odd step is “nice”, but that a <em>uniform, certified drop</em> holds for a Lyapunov scale
+         \(V(n)=\log n + \varphi(n\bmod 2^k)\):</p>
+      <p class="mono">\(V(T(n)) - V(n) ≤ -δ  \,\, \text{for all odd } n,  \quad δ>0.\)</p>
+      <p class="muted">This is the right <em>question</em>: a finite, checkable inequality that tolerates tiny uncertainty.</p>
+    </div>
+
+    <div class="card">
+      <h3>The trap of perfect precision</h3>
+      <ul class="tight">
+        <li><strong>Exact integers only:</strong> insisting on zero uncertainty forces us to resolve residue spikes perfectly—one bad class can stall drift.</li>
+        <li><strong>Ad‑hoc fixes:</strong> without a framework, any successful bound risks being accidental and non‑portable.</li>
+      </ul>
+      <p>Experience suggests the statement is true <em>with</em> a principled budget for small effects—recorded as a constant \(\rho\).</p>
+    </div>
+
+    <div class="card">
+      <h3>Principled uncertainty</h3>
+      <ul class="tight">
+        <li><strong>Local blur:</strong> a short positive averaging on last bits formalizes limited resolution.</li>
+        <li><strong>Uniform budget:</strong> the tiny additive \(\varepsilon(n)=\log(1+1/(3n))\) is bounded by \(\rho\) on each residue class (after blur).</li>
+        <li><strong>Finite witness:</strong> the target becomes a system of linear inequalities on \(\varphi\) indexed by odd residues.</li>
+      </ul>
+      <p class="muted">We avoid naming any specific hidden structure; we only pay a small, explicit <em>uncertainty cost</em>.</p>
+    </div>
+
+    <div class="card">
+      <h3>Why this reframing matters</h3>
+      <ul class="tight">
+        <li>Asks for a <em>finite certificate</em>, not an omniscient formula.</li>
+        <li>Explains prior dead‑ends: the right question must tolerate controlled blur.</li>
+        <li>Connects analysis to computation: inequalities are auditable with interval arithmetic.</li>
+      </ul>
+      <p class="muted">Next: Page 14 surveys why blur is natural (regularization), before we close with “blur is the way.”</p>
+    </div>
+
+    <div class="pager">
+      <a href="12-constants-car-box.html">← Prev</a>
+      <a href="14-why-blur-necessary.html">Next →</a>
+    </div>
+    <footer>© 2025 • Collatz & Blur.</footer>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		
+  </div>
+</body>
+</html>

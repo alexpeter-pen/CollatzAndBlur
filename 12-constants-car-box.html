@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>12 · Constants and Windows</title>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root{ --bg:#0b0d10; --card:#12161b; --ink:#e8eef6; --muted:#a7b3c1; --accent:#7dd3fc; --ok:#86efac; --warn:#fca5a5; --line:#1f2937; }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --muted:#475569; --accent:#0284c7; --ok:#16a34a; --warn:#b91c1c; --line:#e2e8f0; }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--ink); background:radial-gradient(1200px 600px at 20% -10%, #0b3a5a22, transparent), var(--bg);
+    }
+    .wrap{max-width:960px;margin:auto;padding:24px}
+    header{padding:18px 0 12px 0; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap}
+    h1{font-size:clamp(1.6rem,2.6vw,2.2rem);margin:0 0 6px 0; letter-spacing:.2px}
+    p.lead{color:var(--muted); margin:.25rem 0 0 0}
+    nav a{color:var(--accent); text-decoration:none; margin-right:.6rem}
+    nav a:hover{text-decoration:underline}
+    .card{
+      background:linear-gradient(180deg, #ffffff08, transparent), var(--card);
+      border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px 18px; box-shadow:0 6px 20px #00000012;
+      margin-bottom:14px;
+    }
+    h2, h3{margin:.3rem 0 .6rem 0; font-size:1.1rem}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace}
+    code.inline{background:#00000022; padding:.1em .35em; border-radius:6px}
+    ul.tight{margin:.2rem 0 .2rem 1.1rem; padding:0}
+    ul.tight li{margin:.15rem 0}
+    pre{background:#00000018; padding:.8rem 1rem; border-radius:12px; overflow:auto; border:1px solid var(--line)}
+    footer{margin-top:18px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem}
+    .pager{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px}
+    .pager a{border:1px solid var(--line); background:#ffffff08; padding:.5rem .7rem; border-radius:12px; color:var(--ink); text-decoration:none}
+    .pager a:hover{background:#ffffff12}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		  
+        <h1>12 · Constants and Windows</h1>
+        <p class="lead">Why “car‑box” (boxcar) windows and a scale derivative show up.</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="11-special-class-rstar.html">← Prev</a>
+        <a href="13-right-question-limits.html">Next →</a>
+      </nav>
+    </header>
+    <div class="card">
+      <h3>The constants, at a glance</h3>
+      <ul class="tight">
+        <li><strong>\(\rho\)</strong> — the <em>switch budget</em> for estimating the tiny additive term \(\varepsilon(n)=\log(1+1/(3n))\) inside a multiplicative (log) lens after a short local blur.</li>
+        <li><strong>\(\delta\)</strong> — the <em>drift margin</em> guaranteed by the residue inequalities for \(V(n)=\log n + \varphi(n\bmod 2^k)\).</li>
+      </ul>
+      <p>They appear together in the certificate. A typical target is to make \(\delta>0\) with \(\rho+\delta<\log(4/3)\) (or another explicit threshold) so one odd step contracts the scale.</p>
+    </div>
+
+    <div class="card">
+      <h3>Boxcar (“car‑box”) window</h3>
+      <p>Pick a radius \(m\) and set uniform, positive weights \(w_h=\tfrac{1}{2m+1}\) for \(h\in\{-m,\ldots,m\}\). For a function on odd residues \(f\), define the local blur</p>
+      <p class="mono">\((\mathcal B f)(r) \,=\, \sum\limits_{h=-m}^m w_h\, f(r+2h) \quad (\bmod\ 2^k).\)</p>
+      <ul class="tight">
+        <li><strong>Locality:</strong> only nearby last bits mix (odd residues differ by 2).</li>
+        <li><strong>Positivity:</strong> \(w_h\ge 0\) keeps the bound conservative.</li>
+        <li><strong>Finite:</strong> everything lives mod \(2^k\); no tails.</li>
+      </ul>
+      <p class="muted">Other windows (e.g., Fejér) are possible; boxcar is simplest and works well here.</p>
+    </div>
+
+    <div class="card">
+      <h3>The “derivative” that matters</h3>
+      <p>Two discrete derivatives quantify tiny changes:</p>
+      <ul class="tight">
+        <li><strong>Scale derivative of the map:</strong> \(\Delta(n)=\log\tfrac{T(n)}{n}=\log 3 - v_2(3n{+}1)\,\log 2 + \varepsilon(n)\).</li>
+        <li><strong>Residue derivative of \(\varphi\):</strong> along an edge \(r\to r'\), \(\nabla\!\varphi(r\to r')=\varphi(r')-\varphi(r)\).</li>
+      </ul>
+      <p>After blurring the jagged part \(D_0(r)=\log 3-v_2(3r{+}1)\log 2\) into \(\overline D=(\mathcal B D_0)\), the certificate reads</p>
+      <pre>φ(r′) − φ(r) ≤ −δ − ȲD(r) + ρ,   with  ȲD = (𝔅 D₀).</pre>
+    </div>
+
+    <div class="card">
+      <h3>How \(\rho\) and \(\delta\) are obtained</h3>
+      <ol class="tight">
+        <li><strong>Choose</strong> \(k\), window radius \(m\), and weights (boxcar by default).</li>
+        <li><strong>Compute</strong> \(\overline D(r)\) and the residue graph \(r\mapsto r'\) (treat \(r^*\) with \(v_2\ge k\)).</li>
+        <li><strong>Bound</strong> \(\varepsilon(n)\) by \(\rho\) on each residue class via interval arithmetic (after blur).</li>
+        <li><strong>Solve</strong> the LP maximizing \(\delta\) subject to all residue inequalities and a gauge for \(\varphi\) (e.g., mean zero).</li>
+        <li><strong>Verify</strong> every inequality independently with directed‑rounding intervals.</li>
+      </ol>
+      <p class="muted">Trade‑off: larger \(m\) smooths \(\overline D\) (helping \(\delta\)) but may enlarge \(\rho\).</p>
+    </div>
+
+    <div class="card">
+      <h3>Why these choices fit the problem</h3>
+      <ul class="tight">
+        <li><strong>Addition vs multiplication:</strong> \(\rho\) prices the unavoidable lens switch; \(\delta\) captures genuine average contraction.</li>
+        <li><strong>Boxcar positivity:</strong> prevents “cheating” by cancellation—essential for a trustworthy certificate.</li>
+        <li><strong>Discrete derivative:</strong> \(\varphi(r')-\varphi(r)\) is exactly what the inequality controls; it’s the right notion of slope on the residue graph.</li>
+      </ul>
+    </div>
+
+    <div class="pager">
+      <a href="11-special-class-rstar.html">← Prev</a>
+      <a href="13-right-question-limits.html">Next →</a>
+    </div>
+    <footer>© 2025 • Collatz & Blur.</footer>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		
+  </div>
+</body>
+</html>

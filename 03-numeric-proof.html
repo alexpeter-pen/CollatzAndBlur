@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3 · The Numeric Proof</title>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root{ --bg:#0b0d10; --card:#12161b; --ink:#e8eef6; --muted:#a7b3c1; --accent:#7dd3fc; --ok:#86efac; --warn:#fca5a5; --line:#1f2937; }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --muted:#475569; --accent:#0284c7; --ok:#16a34a; --warn:#b91c1c; --line:#e2e8f0; }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--ink); background:radial-gradient(1200px 600px at 20% -10%, #0b3a5a22, transparent), var(--bg);
+    }
+    .wrap{max-width:960px;margin:auto;padding:24px}
+    header{padding:18px 0 12px 0; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap}
+    h1{font-size:clamp(1.6rem,2.6vw,2.2rem);margin:0 0 6px 0; letter-spacing:.2px}
+    p.lead{color:var(--muted); margin:.25rem 0 0 0}
+    nav a{color:var(--accent); text-decoration:none; margin-right:.6rem}
+    nav a:hover{text-decoration:underline}
+    .card{
+      background:linear-gradient(180deg, #ffffff08, transparent), var(--card);
+      border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px 18px; box-shadow:0 6px 20px #00000012;
+      margin-bottom:14px;
+    }
+    h2, h3{margin:.3rem 0 .6rem 0; font-size:1.1rem}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace}
+    code.inline{background:#00000022; padding:.1em .35em; border-radius:6px}
+    pre{background:#00000018; padding:.8rem 1rem; border-radius:12px; overflow:auto; border:1px solid var(--line)}
+    footer{margin-top:18px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem}
+    .pager{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px}
+    .pager a{border:1px solid var(--line); background:#ffffff08; padding:.5rem .7rem; border-radius:12px; color:var(--ink); text-decoration:none}
+    .pager a:hover{background:#ffffff12}
+    ul.tight{margin:.2rem 0 .2rem 1.1rem; padding:0}
+    ul.tight li{margin:.15rem 0}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		  
+        <h1>3 · The Numeric Proof</h1>
+        <p class="lead">What counts as a computer‑assisted certificate.</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="02-simplicity.html">← Prev</a>
+        <a href="04-general-attempts.html">Next →</a>
+      </nav>
+    </header>
+
+    <div class="card">
+      <h3>Goal in one sentence</h3>
+      <p>Produce a <em>finite</em> certificate that forces a uniform one‑step decrease of a Lyapunov scale
+      \(V(n)=\log n + \varphi(n\bmod 2^k)\) along all accelerated odd steps.
+      The certificate is a collection of linear inequalities indexed by odd residues modulo \(2^k\).</p>
+    </div>
+
+    <div class="card">
+      <h3>The inequality</h3>
+      <p>Write the accelerated step for odd \(n\) as \(T(n)=\dfrac{3n+1}{2^{v_2(3n+1)}}\). We want</p>
+      <p align="center">\(V(T(n)) - V(n) = [\log 3 - v_2(3n+1)\cdot\log 2 + \log(1+1/(3n))] + [φ(r') - φ(r)] ≤ -δ,\)</p>
+      <p>where \(r\equiv n\pmod{2^k}\) (odd) and \(r' \equiv T(n)\pmod{2^k}\). The tiny term \(\log(1+1/(3n))\) is bounded from above
+      uniformly on each residue class by a small budget \(\rho_k\). Thus it suffices to enforce, for every odd residue \(r\),</p>
+      <p align="center">\(φ(r') - φ(r) ≤ -δ - [\log 3 - v_2(3r+1)\cdot \log 2] + ρ_k.\)</p>
+      <p>These are <strong>linear</strong> constraints in the unknowns \(\{φ(r)\}\) and \(δ\).</p>
+    </div>
+
+    <div class="card">
+      <h3>How we obtain the certificate</h3>
+      <ol class="tight">
+        <li><strong>Fix a modulus</strong> \(2^k\) (e.g., start small; later we use \(k=13\)). Unknowns: one value \(φ(r)\) per odd residue and a margin \(δ\).</li>
+        <li><strong>Compute transitions</strong> \(r\mapsto r'\) and exponents \(v_2(3r+1)\) for all odd residues.</li>
+        <li><strong>Choose a conservative bound</strong> \(\rho_k\) so that for all \(n\equiv r\pmod{2^k}\), \(\log(1+1/(3n))\le \rho_k\) (checked by interval arithmetic).</li>
+        <li><strong>Solve the LP</strong>: maximize \(δ\) subject to all residue inequalities and a normalization (e.g., average \(φ\)=0).</li>
+        <li><strong>Export a certificate</strong>: the list of \(φ(r)\), the value of \(δ\), the bound \(\rho_k\), and \(k\).</li>
+        <li><strong>Independent verify</strong>: a tiny program re‑derives \(r'\), checks every inequality with <em>interval arithmetic</em> (no rounding trust), and confirms \(δ>0\).</li>
+      </ol>
+      <p class="muted">Philosophically: this is a finite, checkable witness that average drift is negative after one accelerated step.</p>
+    </div>
+
+    <div class="card">
+      <h3>Toy example (k=4, schematic)</h3>
+      <p>For \(k=4\) there are 8 odd residues. One constraint looks like</p>
+      <pre>φ( (3·r+1)/2^{v_2(3r+1)}  mod 16 ) - φ(r)
+≤ -δ - [log 3 - v_2(3r+1)·log 2] + ρ₄.</pre>
+      <p>Solving the tiny LP may already give a small positive \(δ\). Larger \(k\) improves uniformity while keeping the system finite.</p>
+    </div>
+
+    <div class="card">
+      <h3>What “numeric proof” means here</h3>
+      <ul class="tight">
+        <li><strong>Finite</strong>: everything reduces to a finite LP and finitely many interval checks.</li>
+        <li><strong>Auditable</strong>: a separate, minimal checker verifies the output without relying on a solver’s internals.</li>
+        <li><strong>Stable</strong>: the checker uses interval arithmetic to prevent false positives from floating‑point error.</li>
+      </ul>
+      <p class="muted">In later pages we’ll connect \(δ\) and the switching budget \(\rho\) (from +/× lens mismatch) and discuss thresholds where drift guarantees convergence.</p>
+    </div>
+
+    <div class="pager">
+      <a href="02-simplicity.html">← Prev</a>
+      <a href="04-general-attempts.html">Next →</a>
+    </div>
+    <footer>© 2025 • Collatz & Blur.</footer>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		
+  </div>
+</body>
+</html>

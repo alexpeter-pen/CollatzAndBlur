@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>6 · How the Ingredient Helps</title>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root{ --bg:#0b0d10; --card:#12161b; --ink:#e8eef6; --muted:#a7b3c1; --accent:#7dd3fc; --ok:#86efac; --warn:#fca5a5; --line:#1f2937; }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --muted:#475569; --accent:#0284c7; --ok:#16a34a; --warn:#b91c1c; --line:#e2e8f0; }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--ink); background:radial-gradient(1200px 600px at 20% -10%, #0b3a5a22, transparent), var(--bg);
+    }
+    .wrap{max-width:960px;margin:auto;padding:24px}
+    header{padding:18px 0 12px 0; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap}
+    h1{font-size:clamp(1.6rem,2.6vw,2.2rem);margin:0 0 6px 0; letter-spacing:.2px}
+    p.lead{color:var(--muted); margin:.25rem 0 0 0}
+    nav a{color:var(--accent); text-decoration:none; margin-right:.6rem}
+    nav a:hover{text-decoration:underline}
+    .card{
+      background:linear-gradient(180deg, #ffffff08, transparent), var(--card);
+      border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px 18px; box-shadow:0 6px 20px #00000012;
+      margin-bottom:14px;
+    }
+    h2, h3{margin:.3rem 0 .6rem 0; font-size:1.1rem}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace}
+    .pill{display:inline-block; padding:.28em .6em; border-radius:999px; border:1px solid var(--line); color:var(--muted); font-size:.8rem}
+    footer{margin-top:18px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem}
+    .pager{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px}
+    .pager a{border:1px solid var(--line); background:#ffffff08; padding:.5rem .7rem; border-radius:12px; color:var(--ink); text-decoration:none}
+    .pager a:hover{background:#ffffff12}
+    table{border-collapse:collapse; width:max(520px,60%); margin:.3rem 0; background:#00000008}
+    th, td{border:1px solid var(--line); padding:.35rem .5rem; text-align:center}
+    th{background:#ffffff10}
+    .hint{font-size:.92rem; color:var(--muted)}
+    code.inline{background:#00000022; padding:.1em .35em; border-radius:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		  
+        <h1>6 · How the Ingredient Helps</h1>
+        <p class="lead">A small example (and why k=13, and its first 64 out of 4096 odd residues).</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="05-missed-ingredient.html">← Prev</a>
+        <a href="07-lyapunov-story.html">Next →</a>
+      </nav>
+    </header>
+    <div class="card">
+      <h3>Split the step, then budget the switch</h3>
+      <p>Write the accelerated odd step as \(T(n)=\dfrac{3n+1}{2^{v_2(3n+1)}}\). Its one‑step change
+         \(\Delta(n)=\log\tfrac{T(n)}{n}\) splits into a large residue‑driven term \(\log 3-v_2(3n{+}1)\log 2\) and a tiny additive correction \(\log(1+1/(3n))\).
+         A <em>tiny, explicit blur</em> over the last bits lets us bound the correction by \(\rho\) uniformly on residue classes.</p>
+      <p class="hint">We won’t optimize \(\rho\) here—this is a small, didactic preview.</p>
+    </div>
+
+    <div class="card">
+      <h3>Micro‑demo: first 64 odd residues inside 2^13 arithmetic</h3>
+      <p>Take odd representatives \(r\in\{1,3,\dots,127\}\). For each \(r\), compute \(e=v_2(3r+1)\) and the raw drop
+      \(D_0(r)=\log 3-e\log 2\). A 5‑point uniform blur over neighboring odd residues produces \(\overline D(r)\).</p>
+      <table>
+        <thead><tr><th>odd r</th><th>v₂(3r+1)</th><th>D₀(r)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>2</td><td>-0.2877</td></tr>
+<tr><td>3</td><td>1</td><td>0.4055</td></tr>
+<tr><td>5</td><td>4</td><td>-1.6740</td></tr>
+<tr><td>7</td><td>1</td><td>0.4055</td></tr>
+<tr><td>9</td><td>2</td><td>-0.2877</td></tr>
+<tr><td>11</td><td>1</td><td>0.4055</td></tr>
+<tr><td>13</td><td>3</td><td>-0.9808</td></tr>
+<tr><td>15</td><td>1</td><td>0.4055</td></tr>
+        </tbody>
+      </table>
+      <p class="hint">Table shows a tiny slice (first 8 residues) — values are in natural logs.</p>
+      <p><strong>Summary over 64 residues:</strong> min D₀ = -4.4466; min \(\overline D\) = -0.9808;
+         negatives: D₀ has 32/64, \(\overline D\) has 64/64.</p>
+      <p>This illustrates how a small last‑bits blur stabilizes the jagged residue term—exact thresholds and the \(\varphi\) correction come next.</p>
+    </div>
+
+    <div class="card">
+      <h3>Where this is going</h3>
+      <p>With a Lyapunov scale \(V(n)=\log n + \varphi(n\bmod 2^k)\), we’ll pick \(\varphi\) by solving a finite LP so that
+         \(V(T(n)) - V(n) \le -\delta\) holds uniformly, using the blur budget \(\rho\). We will later work at \(k=13\) fully;
+         the 64‑residue preview here only demonstrates the stabilizing effect.</p>
+    </div>
+
+    <div class="pager">
+      <a href="05-missed-ingredient.html">← Prev</a>
+      <a href="07-lyapunov-story.html">Next →</a>
+    </div>
+    <footer>© 2025 • Collatz & Blur.</footer>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		
+  </div>
+</body>
+</html>

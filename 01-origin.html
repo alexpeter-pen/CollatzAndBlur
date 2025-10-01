@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>1 · The Origin</title>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root{
+      --bg:#0b0d10; --card:#12161b; --ink:#e8eef6; --muted:#a7b3c1; --accent:#7dd3fc; --ok:#86efac; --warn:#fca5a5; --line:#1f2937;
+    }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --muted:#475569; --accent:#0284c7; --ok:#16a34a; --warn:#b91c1c; --line:#e2e8f0; }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--ink); background:radial-gradient(1200px 600px at 20% -10%, #0b3a5a22, transparent), var(--bg);
+    }
+    .wrap{max-width:960px;margin:auto;padding:24px}
+    header{padding:18px 0 12px 0; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap}
+    h1{font-size:clamp(1.6rem,2.6vw,2.2rem);margin:0 0 6px 0; letter-spacing:.2px}
+    p.lead{color:var(--muted); margin:.25rem 0 0 0}
+    nav a{color:var(--accent); text-decoration:none; margin-right:.6rem}
+    nav a:hover{text-decoration:underline}
+    .card{
+      background:linear-gradient(180deg, #ffffff08, transparent), var(--card);
+      border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px 18px; box-shadow:0 6px 20px #00000012;
+      margin-bottom:14px;
+    }
+    h2, h3{margin:.3rem 0 .6rem 0; font-size:1.1rem}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace}
+    .pill{display:inline-block; padding:.28em .6em; border-radius:999px; border:1px solid var(--line); color:var(--muted); font-size:.8rem}
+    footer{margin-top:18px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem}
+    .pager{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px}
+    .pager a{border:1px solid var(--line); background:#ffffff08; padding:.5rem .7rem; border-radius:12px; color:var(--ink); text-decoration:none}
+    .pager a:hover{background:#ffffff12}
+    ul.tight{margin:.2rem 0 .2rem 1.1rem; padding:0}
+    ul.tight li{margin:.15rem 0}
+    code.inline{background:#00000022; padding:.1em .35em; border-radius:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>	  
+        <h1>1 · The Origin</h1>
+        <p class="lead">Where the 3x+1 story begins, and why a tiny rule needs a careful lens.</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="02-simplicity.html">Next →</a>
+      </nav>
+    </header>
+
+    <div class="card">
+      <h3>What is the Collatz map?</h3>
+      <p>Start from any positive integer <span class="mono">n</span>. If <span class="mono">n</span> is even, send it to <span class="mono">n/2</span>; if odd, send it to <span class="mono">3n+1</span>.
+      A convenient “accelerated” odd step compresses all the trailing divisions by two:</p>
+      <p align="center">\(\large T(n) = \frac{\LARGE 3n+1}{\LARGE 2^{v_2(3n+1)}} \,\, (\large n \text{ odd}),\)</p>
+      <p>where \(v_2(m)\) is the exponent of 2 in \(m\). Iterating \(T\) only at odd numbers removes the boring halving runs and makes the arithmetic structure visible.</p>
+    </div>
+
+    <div class="card">
+      <h3>Why “accelerate” and look at residues?</h3>
+      <p>The basic energy change is
+        \[ \Delta(n) \;=\; \log\!\frac{T(n)}{n} \,=\, \log 3 \, - \, v_2(3n{+}1)\,\log 2 \, + \, \log\!\Bigl(1 + \tfrac{1}{3n}\Bigr). \]
+        The large, residue–controlled part is \(\log 3 - v_2(3n{+}1)\log 2\); the tiny additive correction is \(\log(1+1/(3n))\).
+        Watching \(n\bmod 2^k\) stabilizes the big term and sets us up for a small, explicit “blur” later.</p>
+      <p class="muted">Notation: \(v_2\) is the 2‑adic valuation; all logs are natural unless stated.</p>
+    </div>
+
+    <div class="card">
+      <h3>A tiny example</h3>
+      <p>Starting at <span class="mono">7</span> the accelerated odd steps are
+      <code class="inline">7 → 11 → 17 → 13 → 5 → 1</code>, with exponents
+      <code class="inline">v₂(22)=1, v₂(34)=1, v₂(52)=2, v₂(40)=3, v₂(16)=4</code> at each odd step.
+      This illustrates how the residue term \(v_2(3n{+}1)\) drives the main drop.</p>
+    </div>
+
+    <div class="card">
+      <h3>Historical note (one paragraph)</h3>
+      <p>The problem is often attributed to Lothar Collatz (mid‑20th century) and appears under names such as the <em>Syracuse</em> or <em>3x+1</em> problem.
+      Its charm is the gap between a child‑simple rule and a still‑open global statement.</p>
+    </div>
+
+    <div class="card">
+      <h3>What this page set up → next</h3>
+      <ul class="tight">
+        <li><strong>Page 2:</strong> just how simple the rule is—and why simplicity can hide structure.</li>
+        <li><strong>Page 3:</strong> what we mean by a <em>numeric proof</em> (a finite, checkable certificate).</li>
+        <li><strong>Page 4–6:</strong> the missed ingredient (addition vs multiplication), and a small residue example.</li>
+      </ul>
+    </div>
+
+    <div class="pager">
+      <a href="02-simplicity.html">Next →</a>
+    </div>
+
+    <footer>© 2025 • Collatz & Blur.</footer>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		
+  </div>
+</body>
+</html>

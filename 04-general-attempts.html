@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>4 · General Attempts</title>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root{ --bg:#0b0d10; --card:#12161b; --ink:#e8eef6; --muted:#a7b3c1; --accent:#7dd3fc; --ok:#86efac; --warn:#fca5a5; --line:#1f2937; }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --muted:#475569; --accent:#0284c7; --ok:#16a34a; --warn:#b91c1c; --line:#e2e8f0; }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--ink); background:radial-gradient(1200px 600px at 20% -10%, #0b3a5a22, transparent), var(--bg);
+    }
+    .wrap{max-width:960px;margin:auto;padding:24px}
+    header{padding:18px 0 12px 0; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap}
+    h1{font-size:clamp(1.6rem,2.6vw,2.2rem);margin:0 0 6px 0; letter-spacing:.2px}
+    p.lead{color:var(--muted); margin:.25rem 0 0 0}
+    nav a{color:var(--accent); text-decoration:none; margin-right:.6rem}
+    nav a:hover{text-decoration:underline}
+    .card{
+      background:linear-gradient(180deg, #ffffff08, transparent), var(--card);
+      border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px 18px; box-shadow:0 6px 20px #00000012;
+      margin-bottom:14px;
+    }
+    h2, h3{margin:.3rem 0 .6rem 0; font-size:1.1rem}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace}
+    code.inline{background:#00000022; padding:.1em .35em; border-radius:6px}
+    ul.tight{margin:.2rem 0 .2rem 1.1rem; padding:0}
+    ul.tight li{margin:.15rem 0}
+    footer{margin-top:18px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem}
+    .pager{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px}
+    .pager a{border:1px solid var(--line); background:#ffffff08; padding:.5rem .7rem; border-radius:12px; color:var(--ink); text-decoration:none}
+    .pager a:hover{background:#ffffff12}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		  
+        <h1>4 · General Attempts</h1>
+        <p class="lead">What has been tried and why it’s tricky.</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="03-numeric-proof.html">← Prev</a>
+        <a href="05-missed-ingredient.html">Next →</a>
+      </nav>
+    </header>
+
+    <div class="card">
+      <h3>1) Search for cycles & divergence</h3>
+      <ul class="tight">
+        <li><strong>Cycles:</strong> brute‑force searches rule out small nontrivial cycles; parity‑vector arguments encode possible cycles but explode combinatorially.</li>
+        <li><strong>Divergence heuristics:</strong> random‑model estimates suggest overall contraction on average, yet residue spikes (via \(v_2(3n{+}1)\)) keep local behavior jagged.</li>
+      </ul>
+      <p class="muted">Moral: naive global statements miss residue‑scale structure.</p>
+    </div>
+
+    <div class="card">
+      <h3>2) Congruences, trees, and parity vectors</h3>
+      <ul class="tight">
+        <li><strong>Backward trees:</strong> expanding the inverse map builds enormous trees but offers little uniform control.</li>
+        <li><strong>Residues mod \(2^k\):</strong> partial structure appears, yet without a <em>uniform</em> inequality one residue can stall progress.</li>
+        <li><strong>Parity encodings:</strong> semiconjugacy to shift systems clarifies patterns but doesn’t yield a monotone potential.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>3) Probabilistic & p‑adic views</h3>
+      <ul class="tight">
+        <li><strong>Stochastic surrogates:</strong> treat \(v_2(3n{+}1)\) as “almost geometric”; this captures trends but lacks a hard certificate.</li>
+        <li><strong>2‑adic/3‑adic dynamics:</strong> rich local behavior, yet the mix of + and × frustrates a single invariant that controls the integer orbit.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>What keeps breaking</h3>
+      <ul class="tight">
+        <li><strong>Lens mismatch:</strong> multiplication is native to Mellin (log‑scale), addition to Fourier. Demanding both be sharp at once forces an <em>uncounted</em> toll.</li>
+        <li><strong>No uniform drift:</strong> without paying that toll, one “bad” residue can neutralize an otherwise negative average.</li>
+      </ul>
+      <p class="muted">This points to the <em>missed ingredient</em>: explicitly budget the lens switch (+ vs ×) with a small constant \(\rho\).</p>
+    </div>
+
+    <div class="card">
+      <h3>Bridge to the next page</h3>
+      <p>On the next page we isolate the two channels (addition vs multiplication) and add a tiny, explicit budget \(\rho\) for switching lenses. That budget enables a
+      <em>finite residue certificate</em> with a positive margin \(\delta\), giving a uniform one‑step decrease of
+      \(V(n)=\log n + \varphi(n\bmod 2^k)\).</p>
+    </div>
+
+    <div class="pager">
+      <a href="03-numeric-proof.html">← Prev</a>
+      <a href="05-missed-ingredient.html">Next →</a>
+    </div>
+    <footer>© 2025 • Collatz & Blur.</footer>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		
+  </div>
+</body>
+</html>

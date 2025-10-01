@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>10 · Slow Derivation to a Proof</title>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root{ --bg:#0b0d10; --card:#12161b; --ink:#e8eef6; --muted:#a7b3c1; --accent:#7dd3fc; --ok:#86efac; --warn:#fca5a5; --line:#1f2937; }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --muted:#475569; --accent:#0284c7; --ok:#16a34a; --warn:#b91c1c; --line:#e2e8f0; }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--ink); background:radial-gradient(1200px 600px at 20% -10%, #0b3a5a22, transparent), var(--bg);
+    }
+    .wrap{max-width:960px;margin:auto;padding:24px}
+    header{padding:18px 0 12px 0; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap}
+    h1{font-size:clamp(1.6rem,2.6vw,2.2rem);margin:0 0 6px 0; letter-spacing:.2px}
+    p.lead{color:var(--muted); margin:.25rem 0 0 0}
+    nav a{color:var(--accent); text-decoration:none; margin-right:.6rem}
+    nav a:hover{text-decoration:underline}
+    .card{
+      background:linear-gradient(180deg, #ffffff08, transparent), var(--card);
+      border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px 18px; box-shadow:0 6px 20px #00000012;
+      margin-bottom:14px;
+    }
+    h2, h3{margin:.3rem 0 .6rem 0; font-size:1.1rem}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace}
+    code.inline{background:#00000022; padding:.1em .35em; border-radius:6px}
+    pre{background:#00000018; padding:.8rem 1rem; border-radius:12px; overflow:auto; border:1px solid var(--line)}
+    ul.tight{margin:.2rem 0 .2rem 1.1rem; padding:0}
+    ul.tight li{margin:.15rem 0}
+    footer{margin-top:18px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem}
+    .pager{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px}
+    .pager a{border:1px solid var(--line); background:#ffffff08; padding:.5rem .7rem; border-radius:12px; color:var(--ink); text-decoration:none}
+    .pager a:hover{background:#ffffff12}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		  
+        <h1>10 · Slow Derivation to a Proof</h1>
+        <p class="lead">Two routes that meet in the same place.</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="09-solving-by-blur.html">← Prev</a>
+        <a href="11-special-class-rstar.html">Next →</a>
+      </nav>
+    </header>
+    <div class="card">
+      <h3>Setup</h3>
+      <p>Work with the accelerated odd map \(T(n)=\dfrac{3n+1}{2^{v_2(3n+1)}}\) and the Lyapunov scale
+         \(V(n)=\log n + \varphi(n\bmod 2^k)\). Define the jagged term \(D_0(r)=\log 3 - v_2(3r{+}1)\,\log 2\) on odd residues
+         \(r\in (\mathbb Z/2^k\mathbb Z)^{\times}_{\text{odd}}\), pick a short positive blur \(\mathcal B\), and write \(\overline D=(\mathcal B D_0)\).
+         The small additive correction \(\varepsilon(n)=\log(1+1/(3n))\) is bounded by \(\rho\) after the same local blur.</p>
+    </div>
+
+    <div class="card">
+      <h3>Route A — derive the inequalities</h3>
+      <ol class="tight">
+        <li><strong>Residue graph:</strong> compute \(r\mapsto r'\equiv T(n)\pmod{2^k}\) for all odd \(r\); for the unique \(r^*\) with \(3r^*+1\equiv0\pmod{2^k}\), use \(v_2\ge k\).</li>
+        <li><strong>Blurred drift:</strong> enforce for every odd residue
+          \[ \varphi(r')-\varphi(r) \;\le\; -\delta - \overline D(r) + \rho. \]</li>
+        <li><strong>Normalization:</strong> fix the gauge of \(\varphi\) (e.g., average zero) to make the system well-posed.</li>
+        <li><strong>LP:</strong> solve the finite linear program for \(\{\varphi(r)\}\) and margin \(\delta>0\).</li>
+      </ol>
+      <p class="muted">Any \(\delta>0\) with a small \(\rho\) yields a uniform one‑step drop of \(V\).</p>
+    </div>
+
+    <div class="card">
+      <h3>Route B — verify a candidate table</h3>
+      <p>Start from a proposed table of \(\varphi(r)\), a window \(\mathcal B\), and parameters \(k,\rho,\delta\). A tiny checker:</p>
+      <pre>for each odd residue r:
+  e  = v2(3*r+1)              # with e >= k when r == r*
+  D0 = log(3) - e*log(2)
+  D  = (ℬ D0)(r)              # local blur over odd neighbors
+  lhs = φ(r') - φ(r)          # r' = T(n) mod 2^k
+  rhs = -δ - D + ρ
+  assert lhs <= rhs + tol     # interval arithmetic to bound roundoff</pre>
+      <p>Interval arithmetic (directed rounding) ensures the checker is sound even with floating‑point inputs.</p>
+    </div>
+
+    <div class="card">
+      <h3>From one‑step drift to termination</h3>
+      <ul class="tight">
+        <li>Summing \(V(T(n)) - V(n) \le -\delta\) along odd steps, \(V\) drops at least \(m\delta\) after \(m\) steps.</li>
+        <li>Hence \(\log n\) eventually falls below a finite threshold; from there a short finite computation reaches \(1\).</li>
+        <li>Even steps (halving) are benign; they only help.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Certificate format</h3>
+      <ul class="tight">
+        <li>Parameters: \(k,\; \rho,\; \delta,\; \mathcal B\) (window and weights).</li>
+        <li>Table: \(\{\varphi(r)\}_{r\,\text{odd mod }2^k}\).</li>
+        <li>Verification log: pass/fail for each residue inequality, with interval bounds.</li>
+      </ul>
+      <p class="muted">Either route delivers the same artifact: a finite, auditable certificate of uniform drift.</p>
+    </div>
+
+    <div class="pager">
+      <a href="09-solving-by-blur.html">← Prev</a>
+      <a href="11-special-class-rstar.html">Next →</a>
+    </div>
+    <footer>© 2025 • Collatz & Blur.</footer>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		
+  </div>
+</body>
+</html>

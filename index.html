@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Collatz & Blur — A Guided Introduction</title>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root{
+      --bg:#0b0d10; --card:#12161b; --ink:#e8eef6; --muted:#a7b3c1; --accent:#7dd3fc; --ok:#86efac; --warn:#fca5a5; --line:#1f2937;
+    }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --muted:#475569; --accent:#0284c7; --ok:#16a34a; --warn:#b91c1c; --line:#e2e8f0; }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--ink); background:radial-gradient(1200px 600px at 20% -10%, #0b3a5a22, transparent), var(--bg);
+    }
+    .wrap{max-width:960px;margin:auto;padding:24px}
+    header{padding:18px 0 12px 0; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap}
+    h1{font-size:clamp(1.8rem,3vw,2.4rem);margin:0 0 6px 0; letter-spacing:.2px}
+    p.lead{color:var(--muted); margin:.25rem 0 0 0;}
+    nav a{color:var(--accent); text-decoration:none; margin-right:.6rem}
+    nav a:hover{text-decoration:underline}
+    .card{
+      background:linear-gradient(180deg, #ffffff08, transparent), var(--card);
+      border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px 18px; box-shadow:0 6px 20px #00000012;
+      margin-bottom:14px;
+    }
+    h2, h3{margin:.3rem 0 .6rem 0; font-size:1.1rem}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace}
+    .pill{display:inline-block; padding:.28em .6em; border-radius:999px; border:1px solid var(--line); color:var(--muted); font-size:.8rem}
+    footer{margin-top:18px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem}
+    .toc{display:grid; gap:.6rem}
+    .toc a{color:var(--accent); text-decoration:none}
+    .toc a:hover{text-decoration:underline}
+    .pager{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px}
+    .pager a{border:1px solid var(--line); background:#ffffff08; padding:.5rem .7rem; border-radius:12px; color:var(--ink); text-decoration:none}
+    .pager a:hover{background:#ffffff12}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header>
+      <div>
+	  <a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>  
+        <h1>Collatz & Blur</h1>		
+        <p class="lead">A 15‑page guided tour: from the origin and “why it’s simple” to a finite, auditable certificate built with a tiny, principled blur.</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="01-origin.html">Start →</a>
+      </nav>
+    </header>
+
+    <div class="card">
+      <h2>Welcome</h2>
+      <p>The Collatz map mixes <em>multiplication</em> and <em>addition</em> in one step: \(n\mapsto 3n+1\) then divide by powers of two.
+         These two operations live in different “lenses” (Mellin/log for ×, Fourier/linear for +). Demanding perfect sharpness in both leads to jagged behavior at certain residues.
+         Our approach is to pay a tiny, explicit toll \(\rho\) for switching lenses and use a short, positive local blur to stabilize the spikes.
+         The payoff is a finite system of inequalities—an auditable certificate of uniform one‑step decrease for a Lyapunov scale \(V\).</p>
+      <p class="muted">No heavy prerequisites are required beyond basic number theory, valuations, and familiarity with Lyapunov ideas.</p>
+    </div>
+
+    <div class="card">
+      <h2>How to read this site</h2>
+      <ul>
+        <li>Proceed in order; each page is short and focused.</li>
+        <li>MathJax is included on every page—inline math like \(v_2(3n+1)\) and display equations render automatically.</li>
+        <li>Whenever we say “blur”, we mean a <em>positive, local</em> averaging on last bits; the constant \(\rho\) tracks its uniform effect.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Table of Contents</h2>
+      <div class="toc">
+        <div><a href="01-origin.html">1 · The Origin</a></div><div><a href="02-simplicity.html">2 · The Simplicity</a></div><div><a href="03-numeric-proof.html">3 · The Numeric Proof</a></div><div><a href="04-general-attempts.html">4 · General Attempts</a></div><div><a href="05-missed-ingredient.html">5 · The Missed Ingredient</a></div><div><a href="06-how-ingredient-helps.html">6 · How the Ingredient Helps</a></div><div><a href="07-lyapunov-story.html">7 · Lyapunov’s Idea</a></div><div><a href="08-lyapunov-here-catch.html">8 · Applying Lyapunov Here</a></div><div><a href="09-solving-by-blur.html">9 · Solving by Added Blur</a></div><div><a href="10-derivation-to-proof.html">10 · Slow Derivation to a Proof</a></div><div><a href="11-special-class-rstar.html">11 · The Special Class r*</a></div><div><a href="12-constants-car-box.html">12 · Constants and Windows</a></div><div><a href="13-right-question-limits.html">13 · Asking the Right Question</a></div><div><a href="14-why-blur-necessary.html">14 · Why Blur Is Common</a></div><div><a href="15-blur-is-the-way.html">15 · Blur Is the Way</a></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Playground</h2>
+      <div class="toc">
+        <div><a href="Playground1.html">1 · Play Collatz without blur</a></div>
+		<div><a href="Playground.html">2 · Play Collatz with blur</a></div>
+    </div>
+    </div>
+
+
+    <footer>© 2025 • Collatz & Blur.</footer>
+	
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>	
+  </div>
+</body>
+</html>

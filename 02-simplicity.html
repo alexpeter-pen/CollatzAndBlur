@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2 · The Simplicity</title>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root{ --bg:#0b0d10; --card:#12161b; --ink:#e8eef6; --muted:#a7b3c1; --accent:#7dd3fc; --ok:#86efac; --warn:#fca5a5; --line:#1f2937; }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --muted:#475569; --accent:#0284c7; --ok:#16a34a; --warn:#b91c1c; --line:#e2e8f0; }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--ink); background:radial-gradient(1200px 600px at 20% -10%, #0b3a5a22, transparent), var(--bg);
+    }
+    .wrap{max-width:960px;margin:auto;padding:24px}
+    header{padding:18px 0 12px 0; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap}
+    h1{font-size:clamp(1.6rem,2.6vw,2.2rem);margin:0 0 6px 0; letter-spacing:.2px}
+    p.lead{color:var(--muted); margin:.25rem 0 0 0}
+    nav a{color:var(--accent); text-decoration:none; margin-right:.6rem}
+    nav a:hover{text-decoration:underline}
+    .card{
+      background:linear-gradient(180deg, #ffffff08, transparent), var(--card);
+      border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px 18px; box-shadow:0 6px 20px #00000012;
+      margin-bottom:14px;
+    }
+    h2, h3{margin:.3rem 0 .6rem 0; font-size:1.1rem}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace}
+    .pill{display:inline-block; padding:.28em .6em; border-radius:999px; border:1px solid var(--line); color:var(--muted); font-size:.8rem}
+    footer{margin-top:18px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem}
+    .pager{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px}
+    .pager a{border:1px solid var(--line); background:#ffffff08; padding:.5rem .7rem; border-radius:12px; color:var(--ink); text-decoration:none}
+    .pager a:hover{background:#ffffff12}
+    table{border-collapse:collapse; width:max(420px,60%); margin:.3rem 0; background:#00000008}
+    th, td{border:1px solid var(--line); padding:.35rem .5rem; text-align:center}
+    th{background:#ffffff10}
+    .hint{font-size:.92rem; color:var(--muted)}
+    code.inline{background:#00000022; padding:.1em .35em; border-radius:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+	 <a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a> 
+        <h1>2 · The Simplicity</h1>
+        <p class="lead">A tiny rule with oversized behavior.</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="01-origin.html">← Prev</a>
+        <a href="03-numeric-proof.html">Next →</a>
+      </nav>
+    </header>
+
+    <div class="card">
+      <h3>The rule in one breath</h3>
+      <p>For a positive integer <span class="mono">n</span>: even ➜ <span class="mono">n/2</span>, odd ➜ <span class="mono">3n+1</span>.
+         Using the accelerated odd step, we define \(T(n)=\dfrac{{3n+1}}{{2^{{v_2(3n+1)}}}}\) (applied only to odd <span class="mono">n</span>).</p>
+      <p class="hint">This removes long halving runs and exposes the arithmetic signal we care about.</p>
+    </div>
+
+    <div class="card">
+      <h3>Simple ≠ easy: last bits steer the drop</h3>
+      <p>The basic “energy change” for an odd step is
+      \[\Delta(n)=\log\frac{{T(n)}}{{n}}=\log 3 - v_2(3n{{+}}1)\,\log 2 + \log\Bigl(1+\tfrac{{1}}{{3n}}\Bigr).\]
+      The small term \(\log(1+1/(3n))\) is harmless; the main driver is the residue–dependent exponent \(v_2(3n{{+}}1)\).</p>
+      <p>Already modulo \(16\) the last four bits of \(n\) create uneven drops:</p>
+      <table>
+        <thead><tr><th>odd \(r\bmod 16\)</th><th>\(v_2(3r+1)\)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>2</td></tr>
+<tr><td>3</td><td>1</td></tr>
+<tr><td>5</td><td>4</td></tr>
+<tr><td>7</td><td>1</td></tr>
+<tr><td>9</td><td>2</td></tr>
+<tr><td>11</td><td>1</td></tr>
+<tr><td>13</td><td>3</td></tr>
+<tr><td>15</td><td>1</td></tr>
+        </tbody>
+      </table>
+      <p>This jaggedness is the “noise” you feel when plotting Collatz trajectories: nearly identical inputs can have very different single‑step drops.</p>
+    </div>
+
+    <div class="card">
+      <h3>Why this matters</h3>
+      <ul>
+        <li><strong>Local simplicity:</strong> the update rule is tiny.</li>
+        <li><strong>Global difficulty:</strong> the residue term swings by several bits, masking average drift.</li>
+        <li><strong>Foreshadowing:</strong> a <em>tiny, explicit blur</em> over nearby last bits will smooth the swing just enough to reveal a uniform decrease.</li>
+      </ul>
+      <p class="muted">On page 6 we’ll peek at \(k=13\), where there are \(2^{{12}}\) odd residues; even there, a gentle blur stabilizes the inequality.</p>
+    </div>
+
+    <div class="pager">
+      <a href="01-origin.html">← Prev</a>
+      <a href="03-numeric-proof.html">Next →</a>
+    </div>
+
+    <footer>© 2025 • Collatz & Blur.</footer>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		
+  </div>
+</body>
+</html>

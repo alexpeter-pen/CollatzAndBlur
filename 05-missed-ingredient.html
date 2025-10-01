@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>5 · The Missed Ingredient</title>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root{ --bg:#0b0d10; --card:#12161b; --ink:#e8eef6; --muted:#a7b3c1; --accent:#7dd3fc; --ok:#86efac; --warn:#fca5a5; --line:#1f2937; }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --muted:#475569; --accent:#0284c7; --ok:#16a34a; --warn:#b91c1c; --line:#e2e8f0; }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--ink); background:radial-gradient(1200px 600px at 20% -10%, #0b3a5a22, transparent), var(--bg);
+    }
+    .wrap{max-width:960px;margin:auto;padding:24px}
+    header{padding:18px 0 12px 0; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap}
+    h1{font-size:clamp(1.6rem,2.6vw,2.2rem);margin:0 0 6px 0; letter-spacing:.2px}
+    p.lead{color:var(--muted); margin:.25rem 0 0 0}
+    nav a{color:var(--accent); text-decoration:none; margin-right:.6rem}
+    nav a:hover{text-decoration:underline}
+    .card{
+      background:linear-gradient(180deg, #ffffff08, transparent), var(--card);
+      border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px 18px; box-shadow:0 6px 20px #00000012;
+      margin-bottom:14px;
+    }
+    h2, h3{margin:.3rem 0 .6rem 0; font-size:1.1rem}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace}
+    code.inline{background:#00000022; padding:.1em .35em; border-radius:6px}
+    pre{background:#00000018; padding:.8rem 1rem; border-radius:12px; overflow:auto; border:1px solid var(--line)}
+    ul.tight{margin:.2rem 0 .2rem 1.1rem; padding:0}
+    ul.tight li{margin:.15rem 0}
+    footer{margin-top:18px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem}
+    .pager{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px}
+    .pager a{border:1px solid var(--line); background:#ffffff08; padding:.5rem .7rem; border-radius:12px; color:var(--ink); text-decoration:none}
+    .pager a:hover{background:#ffffff12}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		  
+        <h1>5 · The Missed Ingredient</h1>
+        <p class="lead">Addition and multiplication live in different lenses—switching between them has a cost.</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="04-general-attempts.html">← Prev</a>
+        <a href="06-how-ingredient-helps.html">Next →</a>
+      </nav>
+    </header>	
+    <div class="card">
+      <h3>Two native lenses</h3>
+      <ul class="tight">
+        <li><strong>Multiplication → Mellin/log lens.</strong> Scaling is linear on the log axis; multiplicative structure is stable there.</li>
+        <li><strong>Addition → Fourier/linear lens.</strong> Translations are natural; additive structure is stable here.</li>
+      </ul>
+      <p>Collatz’s odd step mixes the two: \(n\mapsto 3n+1\). No single lens can keep both parts perfectly sharp at once.</p>
+    </div>
+
+    <div class="card">
+      <h3>A tiny switching budget \(\rho\)</h3>
+      <p>We record the lens‑switch “toll” by a small constant \(\rho\). With the accelerated step
+      \(T(n)=\dfrac{3n+1}{2^{v_2(3n+1)}}\) and a Lyapunov scale \(V(n)=\log n + \varphi(n\bmod 2^k)\), the one‑step change splits as</p>
+      <p class="mono">\(\Delta(n) = [\log 3 − v_2(3n+1)\cdot\log 2]  +  log(1+1/(3n))  +  [φ(r′) − φ(r)].\)</p>
+      <p>We bound the small additive term by \(\rho\) after a gentle last‑bits blur and enforce the <em>residue certificate</em></p>
+      <p>\(φ(r′) − φ(r) ≤ −δ − [\log 3 − v_2(3r+1)\cdot \log 2] + ρ,\)   for every odd residue \(r \mod 2^k .\)</p>
+      <p>If we can make \(δ>0\) with \(\rho+δ < \log(4/3)\) (or another explicit threshold), then \(V\) decreases uniformly on odd steps.</p>
+    </div>
+
+    <div class="card">
+      <h3>Where \(\rho\) actually comes from</h3>
+      <ul class="tight">
+        <li><strong>Finite resolution:</strong> working modulo \(2^k\) groups many \(n\) together; we upper‑bound the tiny term uniformly on each class.</li>
+        <li><strong>Blur window:</strong> a short, positive averaging (e.g., boxcar) over last bits smooths residue spikes just enough for a clean inequality.</li>
+        <li><strong>Lens change:</strong> estimating an additive perturbation inside a multiplicative frame (or vice versa) incurs a principled, explicit toll.</li>
+      </ul>
+      <p class="muted">\(\rho\) does not change the map—it book‑keeps the unavoidable uncertainty of switching lenses.</p>
+    </div>
+
+    <div class="card">
+      <h3>What’s next</h3>
+      <p>Next we show how this ingredient <em>helps in practice</em> on a small residue example, and why a choice like \(k=13\) with first 64 out of 4096 odd residues already demonstrates the effect.</p>
+    </div>
+
+    <div class="pager">
+      <a href="04-general-attempts.html">← Prev</a>
+      <a href="06-how-ingredient-helps.html">Next →</a>
+    </div>
+    <footer>© 2025 • Collatz & Blur.</footer>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		
+  </div>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>9 · Solving by Added Blur</title>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root{ --bg:#0b0d10; --card:#12161b; --ink:#e8eef6; --muted:#a7b3c1; --accent:#7dd3fc; --ok:#86efac; --warn:#fca5a5; --line:#1f2937; }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --muted:#475569; --accent:#0284c7; --ok:#16a34a; --warn:#b91c1c; --line:#e2e8f0; }
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--ink); background:radial-gradient(1200px 600px at 20% -10%, #0b3a5a22, transparent), var(--bg);
+    }
+    .wrap{max-width:960px;margin:auto;padding:24px}
+    header{padding:18px 0 12px 0; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap}
+    h1{font-size:clamp(1.6rem,2.6vw,2.2rem);margin:0 0 6px 0; letter-spacing:.2px}
+    p.lead{color:var(--muted); margin:.25rem 0 0 0}
+    nav a{color:var(--accent); text-decoration:none; margin-right:.6rem}
+    nav a:hover{text-decoration:underline}
+    .card{
+      background:linear-gradient(180deg, #ffffff08, transparent), var(--card);
+      border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px 18px; box-shadow:0 6px 20px #00000012;
+      margin-bottom:14px;
+    }
+    h2, h3{margin:.3rem 0 .6rem 0; font-size:1.1rem}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace}
+    code.inline{background:#00000022; padding:.1em .35em; border-radius:6px}
+    ul.tight{margin:.2rem 0 .2rem 1.1rem; padding:0}
+    ul.tight li{margin:.15rem 0}
+    footer{margin-top:18px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem}
+    .pager{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px}
+    .pager a{border:1px solid var(--line); background:#ffffff08; padding:.5rem .7rem; border-radius:12px; color:var(--ink); text-decoration:none}
+    .pager a:hover{background:#ffffff12}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		  
+        <h1>9 · Solving by Added Blur</h1>
+        <p class="lead">Why a little blur is not optional.</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="08-lyapunov-here-catch.html">← Prev</a>
+        <a href="10-derivation-to-proof.html">Next →</a>
+      </nav>
+    </header>
+    <div class="card">
+      <h3>The issue: jagged residue drops</h3>
+      <p>The one‑step change
+      \[ \Delta(n) \,=\, \log\frac{T(n)}{n} \,=\, \underbrace{\log 3 - v_2(3n{+}1)\,\log 2}_{\text{residue‑driven}} \;+\; \underbrace{\log\bigl(1+\tfrac{1}{3n}\bigr)}_{\text{tiny additive}}. \]
+      The first term is piecewise constant on residues \(n\bmod 2^k\) but <em>spiky</em>; the second is tiny but depends on \(n\) itself.
+      Without smoothing, a single “bad” residue can cancel average drift.</p>
+    </div>
+
+    <div class="card">
+      <h3>The blur operator</h3>
+      <p>Pick a short, positive window \(W=\{-m,\ldots,m\}\) and weights \(w_h\ge 0\) with \(\sum_h w_h=1\).
+      For any function on odd residues \(f:\ (\mathbb Z/2^k\mathbb Z)^{\times}_{\text{odd}}\to\mathbb R\), define</p>
+      <p align="center"> \( (\mathcal B f)(r) \,=\, \sum\limits_{h=-m}^m w_h\, f(r+2h) \quad (\bmod\ 2^k). \) </p>
+      <ul class="tight">
+        <li><strong>Locality:</strong> only nearby last bits are averaged (odd residues differ by steps of 2).</li>
+        <li><strong>Positivity:</strong> \(w_h\ge 0\) prevents spurious cancellation; the certificate stays conservative.</li>
+        <li><strong>Finite:</strong> all data live modulo \(2^k\); no unbounded tails appear.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>What we blur and why</h3>
+      <ul class="tight">
+        <li><strong>Jagged part:</strong> set \(D_0(r)=\log 3- v_2(3r{+}1)\log 2\) and use \(\overline D(r)=(\mathcal B D_0)(r)\).</li>
+        <li><strong>Tiny additive:</strong> the correction \(\varepsilon(n)=\log(1+1/(3n))\) admits a uniform bound on each residue class
+            <em>after</em> the same local blur; we denote it by \(\rho\).</li>
+      </ul>
+      <p class="muted">\(\rho\) is the principled “switch budget” for moving between the additive and multiplicative lenses.</p>
+    </div>
+
+    <div class="card">
+      <h3>The blurred certificate</h3>
+      <p>With \(V(n)=\log n + \varphi(n\bmod 2^k)\) and \(r'\equiv T(n)\bmod 2^k\), we enforce for every odd residue \(r\)</p>
+      <pre>φ(r′) − φ(r) ≤ −δ − ȲD(r) + ρ,   where  ȲD(r) = (𝔅 D₀)(r).</pre>
+      <p>Equivalently (expanding symbols),</p>
+      <p align="center">\(φ(r′) − φ(r) ≤ −δ − (\mathcal B\, [\log 3 − v₂(3r{+}1)\log 2])(r) + ρ.\)</p>
+      <p>If some \(\delta>0\) exists with \(\rho+\delta<\log(4/3)\) (or a similar explicit threshold), then \(V\) drops uniformly on odd steps.</p>
+    </div>
+
+    <div class="card">
+      <h3>Choosing the window</h3>
+      <ul class="tight">
+        <li><strong>Boxcar (uniform) weights:</strong> simplest, positive, and respects locality; good default.</li>
+        <li><strong>Radius \(m\):</strong> small compared to \(2^k\) so we only mix nearby last bits; larger \(m\) reduces jaggedness but increases \(\rho\).</li>
+        <li><strong>Normalization:</strong> fix \(\sum w_h=1\) and a gauge for \(\varphi\) (e.g., average zero) to keep the LP well‑posed.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Verification path (sketch)</h3>
+      <ol class="tight">
+        <li>Fix \(k\), window \(W\), and weights \(w_h\).</li>
+        <li>Compute \(\overline D(r)\) and the residue graph \(r\mapsto r'\) (care with the exceptional \(r^*\)).</li>
+        <li>Bound \(\varepsilon(n)\) by \(\rho\) on each class using interval arithmetic.</li>
+        <li>Solve the finite LP for \(\{\varphi(r)\}\) and \(\delta\); export and independently verify the inequalities.</li>
+      </ol>
+      <p class="muted">Details of the derivation and checker appear on the next page.</p>
+    </div>
+
+    <div class="pager">
+      <a href="08-lyapunov-here-catch.html">← Prev</a>
+      <a href="10-derivation-to-proof.html">Next →</a>
+    </div>
+    <footer>© 2025 • Collatz & Blur.</footer>
+<a href="https://doi.org/10.5281/zenodo.17240514"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17240514.svg" alt="DOI"></a>		
+  </div>
+</body>
+</html>
